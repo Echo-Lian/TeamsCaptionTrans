@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Teams Live Caption Translator",
+  "version": "1.0",
+  "description": "Captures live Teams captions and sends them for translation",
+  "permissions": ["activeTab", "scripting"],
+  "content_scripts": [
+    {
+      "matches": ["https://teams.microsoft.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
