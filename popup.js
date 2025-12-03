@@ -1,33 +1,13 @@
 const translations = [];
 
-async function loadSettings() {
-  try {
-    const result = await chrome.storage.sync.get(['targetLanguage']);
-    const targetLanguage = result.targetLanguage || 'zh-CN';
-    document.getElementById('targetLanguage').value = targetLanguage;
-  } catch (error) {
-    console.error('Error loading settings:', error);
-  }
-}
-
-async function saveSettings() {
-  const targetLanguage = document.getElementById('targetLanguage').value;
-  const statusEl = document.getElementById('saveStatus');
-
-  try {
-    await chrome.storage.sync.set({ targetLanguage });
-    statusEl.textContent = 'Settings saved!';
-    statusEl.className = 'status-message success';
-
-    setTimeout(() => {
-      statusEl.textContent = '';
-      statusEl.className = 'status-message';
-    }, 2000);
-  } catch (error) {
-    console.error('Error saving settings:', error);
-    statusEl.textContent = 'Error saving settings';
-    statusEl.className = 'status-message error';
-  }
+function getLanguageName(code) {
+  const languages = {
+    'en': 'English',
+    'zh': 'Chinese',
+    'zh-CN': 'Chinese (Simplified)',
+    'zh-TW': 'Chinese (Traditional)'
+  };
+  return languages[code] || code;
 }
 
 function formatTime(timestamp) {
@@ -43,13 +23,18 @@ function displayTranslations() {
     return;
   }
 
-  listEl.innerHTML = translations.map(t => `
-    <div class="translation-item">
-      <div class="translation-original">${escapeHtml(t.original)}</div>
-      <div class="translation-translated">${escapeHtml(t.translated)}</div>
-      <div class="translation-time">${formatTime(t.timestamp)}</div>
-    </div>
-  `).join('');
+  listEl.innerHTML = translations.map(t => {
+    const sourceLang = getLanguageName(t.detectedLang);
+    const targetLang = getLanguageName(t.targetLang);
+    return `
+      <div class="translation-item">
+        <div class="translation-direction">${sourceLang} → ${targetLang}</div>
+        <div class="translation-original">${escapeHtml(t.original)}</div>
+        <div class="translation-translated">→ ${escapeHtml(t.translated)}</div>
+        <div class="translation-time">${formatTime(t.timestamp)}</div>
+      </div>
+    `;
+  }).join('');
 }
 
 function escapeHtml(text) {
@@ -68,6 +53,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     translations.unshift({
       original: message.original,
       translated: message.translated,
+      detectedLang: message.detectedLang,
+      targetLang: message.targetLang,
       timestamp: message.timestamp
     });
 
@@ -79,8 +66,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
-document.getElementById('saveSettings').addEventListener('click', saveSettings);
 document.getElementById('clearHistory').addEventListener('click', clearHistory);
 
-loadSettings();
 displayTranslations();

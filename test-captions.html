@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Test Teams Captions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background: #f0f0f0;
+    }
+    .controls {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    button {
+      background: #6264a7;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background: #5558a0;
+    }
+    .caption-container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .caption {
+      padding: 10px;
+      margin: 10px 0;
+      background: #f8f9fa;
+      border-left: 3px solid #6264a7;
+    }
+    h1 {
+      color: #333;
+    }
+    h2 {
+      color: #555;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    .info {
+      background: #e8f4fd;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      color: #0078d4;
+    }
+  </style>
+</head>
+<body>
+  <h1>Teams Caption Translator - Test Page</h1>
+
+  <div class="info">
+    This page simulates Teams captions for testing. Open the console (F12) to see if the extension is detecting captions.
+  </div>
+
+  <div class="controls">
+    <h2>Test Controls</h2>
+    <button onclick="addChinese()">Add Chinese Caption</button>
+    <button onclick="addEnglish()">Add English Caption</button>
+    <button onclick="changeCaptionChinese()">Change to Chinese</button>
+    <button onclick="changeCaptionEnglish()">Change to English</button>
+    <button onclick="clearCaptions()">Clear All</button>
+  </div>
+
+  <div class="caption-container">
+    <h2>Live Captions</h2>
+    <div id="captions"></div>
+  </div>
+
+  <script>
+    const chineseExamples = [
+      "你好，很高兴见到你",
+      "今天的会议讨论项目进展",
+      "我们需要在下周完成这个任务",
+      "这是一个测试字幕",
+      "谢谢大家的参与"
+    ];
+
+    const englishExamples = [
+      "Hello, nice to meet you",
+      "Today's meeting discusses project progress",
+      "We need to complete this task next week",
+      "This is a test caption",
+      "Thank you for your participation"
+    ];
+
+    let captionIndex = 0;
+
+    function addChinese() {
+      const text = chineseExamples[captionIndex % chineseExamples.length];
+      captionIndex++;
+      addCaption(text);
+    }
+
+    function addEnglish() {
+      const text = englishExamples[captionIndex % englishExamples.length];
+      captionIndex++;
+      addCaption(text);
+    }
+
+    function addCaption(text) {
+      const container = document.getElementById('captions');
+      const caption = document.createElement('div');
+      caption.className = 'caption';
+
+      const span = document.createElement('span');
+      span.setAttribute('dir', 'auto');
+      span.setAttribute('class', 'fui-StyledText ___cyjq0y0 fod5ikn faaz57k f1smnis7 f1u2lo7a');
+      span.setAttribute('data-tid', 'closed-caption-text');
+      span.innerText = text;
+
+      caption.appendChild(span);
+      container.appendChild(caption);
+
+      // Keep only last 5 captions
+      while (container.children.length > 5) {
+        container.removeChild(container.firstChild);
+      }
+
+      // Scroll to bottom
+      container.lastChild.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function changeCaptionChinese() {
+      const captions = document.querySelectorAll('[data-tid="closed-caption-text"]');
+      if (captions.length > 0) {
+        const lastCaption = captions[captions.length - 1];
+        const text = chineseExamples[captionIndex % chineseExamples.length];
+        captionIndex++;
+        lastCaption.innerText = text;
+      } else {
+        addChinese();
+      }
+    }
+
+    function changeCaptionEnglish() {
+      const captions = document.querySelectorAll('[data-tid="closed-caption-text"]');
+      if (captions.length > 0) {
+        const lastCaption = captions[captions.length - 1];
+        const text = englishExamples[captionIndex % englishExamples.length];
+        captionIndex++;
+        lastCaption.innerText = text;
+      } else {
+        addEnglish();
+      }
+    }
+
+    function clearCaptions() {
+      document.getElementById('captions').innerHTML = '';
+    }
+
+    // Add initial caption
+    setTimeout(() => {
+      addChinese();
+    }, 1000);
+  </script>
+</body>
+</html>

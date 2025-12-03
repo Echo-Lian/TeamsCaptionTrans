@@ -1,14 +1,16 @@
 # Teams Live Caption Translator
 
-A Chrome/Edge browser extension that captures live captions from Microsoft Teams meetings and translates them in real-time.
+A Chrome/Edge browser extension that captures live captions from Microsoft Teams meetings and translates them bidirectionally between Chinese and English.
 
 ## Features
 
 - Automatically detects and captures live captions from Teams meetings
-- Real-time translation to multiple languages
-- Clean popup interface to view translations and manage settings
-- Supports 12+ target languages including Chinese, Spanish, French, German, Japanese, and more
+- **Bidirectional translation**: Chinese → English and English → Chinese
+- Automatic language detection
+- Real-time translation display with language direction indicators
+- Clean popup interface to view live translations
 - Translation history with timestamps
+- Shows detected source language and target language for each translation
 
 ## Installation
 
@@ -31,27 +33,22 @@ A Chrome/Edge browser extension that captures live captions from Microsoft Teams
 ### Starting a Translation Session
 
 1. Join a Microsoft Teams meeting
-2. Enable live captions in Teams (Settings > Captions)
-3. The extension will automatically detect and translate captions
+2. Enable live captions in Teams (More > Language and speech > Show live captions)
+3. The extension will automatically detect and translate captions:
+   - **Chinese captions** → Translated to **English**
+   - **English captions** → Translated to **Chinese (Simplified)**
 4. Click the extension icon in your browser toolbar to:
-   - View real-time translations
-   - Change target language
+   - View real-time translations with language direction
+   - See translation history
    - Clear translation history
 
-### Supported Languages
+### How It Works
 
-- Chinese (Simplified)
-- Chinese (Traditional)
-- Spanish
-- French
-- German
-- Japanese
-- Korean
-- Portuguese
-- Russian
-- Arabic
-- Hindi
-- Italian
+The extension uses automatic language detection to determine if the caption is in Chinese or English, then translates it to the opposite language:
+
+- Detects Chinese (Simplified, Traditional, or any zh variant) → Translates to English
+- Detects English → Translates to Chinese (Simplified)
+- Shows the detected source language and target language for each translation
 
 ## Files
 
@@ -74,15 +71,25 @@ This extension:
 
 ### Captions not being detected
 
-- Make sure live captions are enabled in Teams
+- Make sure live captions are enabled in Teams (More > Language and speech > Show live captions)
 - Refresh the Teams page after installing the extension
-- Check the browser console (F12) for any errors
+- Open the browser console (F12) and look for `[TeamsCaption]` log messages
+- Verify you see messages like `[TeamsCaption] Ready - Bidirectional mode (Chinese ↔ English)`
 
 ### Translations not appearing
 
 - Click the extension icon to open the popup
-- Verify your target language is selected
-- Check your internet connection
+- Check the browser console for `[TeamsCaption] NEW:` and `[TeamsCaption] TRANSLATED:` messages
+- Verify your internet connection (translation requires Google Translate API access)
+- Make sure the caption text is either in Chinese or English
+
+### Console debugging
+
+Open the browser console (F12) to see detailed logs:
+- `[TeamsCaption] NEW: [text]` - Caption detected
+- `[TeamsCaption] Detected language: [lang]` - Language detected
+- `[TeamsCaption] TRANSLATED: [text]` - Translation completed
+- `[TeamsCaption] Direction: [source] -> [target]` - Translation direction
 
 ## Development
 
