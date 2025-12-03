@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Teams Caption Translator</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Teams Caption Translator</h1>
+
+    <div class="settings-section">
+      <h2>Settings</h2>
+      <div class="setting-item">
+        <label for="targetLanguage">Target Language:</label>
+        <select id="targetLanguage">
+          <option value="zh-CN">Chinese (Simplified)</option>
+          <option value="zh-TW">Chinese (Traditional)</option>
+          <option value="es">Spanish</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+          <option value="ja">Japanese</option>
+          <option value="ko">Korean</option>
+          <option value="pt">Portuguese</option>
+          <option value="ru">Russian</option>
+          <option value="ar">Arabic</option>
+          <option value="hi">Hindi</option>
+          <option value="it">Italian</option>
+        </select>
+      </div>
+      <button id="saveSettings">Save Settings</button>
+      <div id="saveStatus" class="status-message"></div>
+    </div>
+
+    <div class="translations-section">
+      <h2>Recent Translations</h2>
+      <button id="clearHistory">Clear History</button>
+      <div id="translationsList"></div>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

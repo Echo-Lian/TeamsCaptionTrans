@@ -2,12 +2,30 @@
   "manifest_version": 3,
   "name": "Teams Live Caption Translator",
   "version": "1.0",
-  "description": "Captures live Teams captions and sends them for translation",
-  "permissions": ["activeTab", "scripting"],
+  "description": "Captures live Teams captions and translates them in real-time",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": [
+    "https://translate.googleapis.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    },
+    "default_title": "Teams Caption Translator"
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
   "content_scripts": [
     {
-      "matches": ["https://teams.microsoft.com/*"],
-      "js": ["content.js"]
+      "matches": ["https://teams.microsoft.com/*", "https://*.teams.microsoft.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
     }
   ]
 }

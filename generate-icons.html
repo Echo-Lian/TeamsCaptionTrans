@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Generate Extension Icons</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+    .icon-container {
+      margin: 20px 0;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      margin: 10px;
+      background: white;
+    }
+    button {
+      background: #6264a7;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin: 5px;
+    }
+    button:hover {
+      background: #5558a0;
+    }
+    h1 {
+      color: #333;
+    }
+    .instructions {
+      background: white;
+      padding: 15px;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Teams Caption Translator - Icon Generator</h1>
+
+  <div class="instructions">
+    <h2>Instructions:</h2>
+    <p>Click the buttons below to download the icon files. Save them in the extension directory.</p>
+  </div>
+
+  <div class="icon-container">
+    <h3>16x16 Icon</h3>
+    <canvas id="icon16" width="16" height="16"></canvas>
+    <button onclick="downloadIcon('icon16', 16)">Download icon16.png</button>
+  </div>
+
+  <div class="icon-container">
+    <h3>48x48 Icon</h3>
+    <canvas id="icon48" width="48" height="48"></canvas>
+    <button onclick="downloadIcon('icon48', 48)">Download icon48.png</button>
+  </div>
+
+  <div class="icon-container">
+    <h3>128x128 Icon</h3>
+    <canvas id="icon128" width="128" height="128"></canvas>
+    <button onclick="downloadIcon('icon128', 128)">Download icon128.png</button>
+  </div>
+
+  <script>
+    function drawIcon(canvasId, size) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = '#6264a7';
+      ctx.fillRect(0, 0, size, size);
+
+      ctx.fillStyle = 'white';
+      const fontSize = Math.floor(size * 0.5);
+      ctx.font = `bold ${fontSize}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('T', size / 2, size / 2);
+
+      const cornerSize = size * 0.25;
+      ctx.fillStyle = '#ffd700';
+      ctx.beginPath();
+      ctx.arc(size - cornerSize/2, cornerSize/2, cornerSize/3, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+
+    function downloadIcon(canvasId, size) {
+      const canvas = document.getElementById(canvasId);
+      canvas.toBlob(function(blob) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `icon${size}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+    }
+
+    drawIcon('icon16', 16);
+    drawIcon('icon48', 48);
+    drawIcon('icon128', 128);
+  </script>
+</body>
+</html>
