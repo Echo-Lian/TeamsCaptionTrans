@@ -184,11 +184,36 @@ function startObserver() {
 }
 
 function initialize() {
+  console.log("[TeamsCaption] Initializing on:", window.location.href);
+  console.log("[TeamsCaption] Frame:", window === window.top ? "main frame" : "iframe");
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', startObserver);
   } else {
     startObserver();
   }
+
+  // Also try to start observer after a delay to handle dynamic content
+  setTimeout(() => {
+    console.log("[TeamsCaption] Delayed initialization check");
+    if (!observer || !document.body) {
+      startObserver();
+    }
+  }, 3000);
+
+  // Check every 5 seconds if observer is still active
+  setInterval(() => {
+    if (observer && document.body) {
+      const captions = document.querySelectorAll('[data-tid="closed-caption-text"]');
+      if (captions.length > 0) {
+        console.log("[TeamsCaption] Health check: Found", captions.length, "caption elements");
+      }
+    } else {
+      console.log("[TeamsCaption] Health check: Observer not active, reinitializing");
+      startObserver();
+    }
+  }, 5000);
+
   console.log("[TeamsCaption] Ready - Bidirectional mode (Chinese ↔ English).");
 }
 
