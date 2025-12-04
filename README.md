@@ -55,7 +55,7 @@ The extension uses automatic language detection to determine if the caption is i
 - `manifest.json` - Extension configuration
 - `content.js` - Caption detection and translation logic
 - `background.js` - Stores translation history and sends messages to popup
-- `webpack.config.js` - Examine all the module and bundle them together
+- `webpack.config.js` - Examines all the module and bundles them together
 - `popup.html` - Extension popup interface
 - `popup.js` - Popup functionality
 - `popup.css` - Popup styling
